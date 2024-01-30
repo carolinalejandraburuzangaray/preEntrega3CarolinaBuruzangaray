@@ -1,60 +1,44 @@
-const ropa = [ {
+const productos = [
+  { id: 1, Indumentaria: "Camisa", precio: 15000 },
+  { id: 2, Indumentaria: "Media", precio: 2500 },
+  { id: 3, Indumentaria: "Gorra", precio: 16000 },
+  { id: 4, Indumentaria: "Campera", precio: 150000 },
+ ];
+ const carrito = [];
+ let boton = document.getElementById("boton");
+ let contenedor = document.getElementById("contenedor");
 
-  Id:1,  
-  Nombre:"Remera",
-  Precio: 15000 }, {
-  
-  Id:2,  
-  Nombre: "Short",
-  Precio: 12000
-  
-   },{
-  
-  Id:3,  
-  Nombre: "Zapatillas",  
-  Precio: 30000
-   
-   }, {
-  
-  Id: 4, 
-  Nombre: "Sandalias",
-  Precio: 20000
-  
-  }];
-  
-  
-  //GUARDAR OBJETO CONVERTIDO EN STRING
-  localStorage.setItem("List", JSON.stringify(ropa)); 
-   
-  
-  console.log(localStorage.getItem("List"));
-  
-  
-  
-  //PARSEO LA LISTA - AHORA ES UN OBJETO
-  lst= JSON.parse(localStorage.getItem("List"));
-  
-  
-  
-  //RECORRIDO DE LA LISTA 
-  lst.forEach(element => {
-  
-    let elements = document.getElementById("elements");
-    let div = document.createElement("div");
-  
-    div.innerHTML = element.Id + " " + element.Nombre + " " + element.Precio;
-    elements.appendChild(div);
-  
-  }); 
-  
-  //---------------------------Eliminar carrito-----------------------------------------//
-  
-  
-  //agreagamos el escuchador de evento para el boton
-  boton.addEventListener("click", () => {
-    localStorage.clear(); //borramos el storage
-    alert("Eliminar carrito");
-    location.reload(); //recargamos la pagina
-  });
+ //funcion para agregar el producto al carrito
+ const agregar = (id) => {
+   let productoEncontrado = productos.find((item) => item.id === id);
+   carrito.push(productoEncontrado);
+   console.log(carrito);
+ };
 
+ productos.forEach((item) => {
+   let div = document.createElement("div");
+   div.innerHTML = `
+     <h2>ID: ${item.id}</h2>
+     <p>Indumentaria: ${item.Indumentaria}</p>
+     <b>$${item.precio}</b>
+     <button id="boton${item.id}">Agregar</button>
+   `;
+   //boton personalizado con el id
+   contenedor.append(div);
+
+   let boton = document.getElementById(`boton${item.id}`); //traemos el boton personalizado por el id
+   boton.addEventListener("click", () => agregar(item.id)); //le agregamos el evento
+ });
+
+ boton.addEventListener("click", () => {
+   carrito.forEach((item) => {
+     let div = document.createElement("div");
+   div.innerHTML = `
+     <h2>ID: ${item.id}</h2>
+     <p>Indumentaria: ${item.Indumentaria}</p>
+     <b>$${item.precio}</b>
+   `;
+     document.body.append(div);
+   });
+ });
   
